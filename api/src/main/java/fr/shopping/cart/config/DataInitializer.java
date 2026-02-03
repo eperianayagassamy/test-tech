@@ -16,27 +16,28 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initProducts(ProductRepository productRepository) {
         return args -> {
+            if(productRepository.count() == 0) {
+                Product iphone = new Product("iPhone 14");
 
-            Product iphone = new Product("iPhone 14");
+                Offer iphoneNeuf = new Offer();
+                iphoneNeuf.setProduct(iphone);
+                iphoneNeuf.setState(State.NEUF);
+                iphoneNeuf.setPrice(new BigDecimal("999.00"));
+                iphoneNeuf.setStockQty(5);
+                iphoneNeuf.setDiscountPercent(0);
 
-            Offer iphoneNeuf = new Offer();
-            iphoneNeuf.setProduct(iphone);
-            iphoneNeuf.setState(State.NEUF);
-            iphoneNeuf.setPrice(new BigDecimal("999.00"));
-            iphoneNeuf.setStockQty(5);
-            iphoneNeuf.setDiscountPercent(0);
+                Offer iphoneReconditionne = new Offer();
+                iphoneReconditionne.setProduct(iphone);
+                iphoneReconditionne.setState(State.NEUF);
+                iphoneReconditionne.setPrice(new BigDecimal("799.00"));
+                iphoneReconditionne.setStockQty(5);
+                iphoneReconditionne.setDiscountPercent(20);
 
-            Offer iphoneReconditionne = new Offer();
-            iphoneReconditionne.setProduct(iphone);
-            iphoneReconditionne.setState(State.NEUF);
-            iphoneReconditionne.setPrice(new BigDecimal("799.00"));
-            iphoneReconditionne.setStockQty(5);
-            iphoneReconditionne.setDiscountPercent(20);
+                iphone.getOffers().add(iphoneNeuf);
+                iphone.getOffers().add(iphoneReconditionne);
 
-            iphone.getOffers().add(iphoneNeuf);
-            iphone.getOffers().add(iphoneReconditionne);
-
-            productRepository.save(iphone);
+                productRepository.save(iphone);
+            }
         };
     }
 }
