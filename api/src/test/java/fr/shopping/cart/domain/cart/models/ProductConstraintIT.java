@@ -1,8 +1,6 @@
-package fr.shopping.cart.infrastructure.jpa.cart;
+package fr.shopping.cart.domain.cart.models;
 
-import fr.shopping.cart.domain.cart.models.Offer;
-import fr.shopping.cart.domain.cart.models.Product;
-import fr.shopping.cart.domain.cart.models.State;
+import fr.shopping.cart.infrastructure.jpa.cart.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +35,7 @@ class ProductRepositoryIT {
     void shouldThrowExceptionWhenLabelIsNull() {
         Product product = new Product(null);
 
-        assertThrows(DataIntegrityViolationException.class, () -> {
-            productRepository.saveAndFlush(product);
-        });
+        assertThrows(DataIntegrityViolationException.class, () -> productRepository.saveAndFlush(product));
     }
 
     @Test
