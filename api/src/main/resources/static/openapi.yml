@@ -59,6 +59,8 @@ paths:
           description: Item added
         '400':
           description: Invalid input
+        '404':
+          description: Product or offer not found
         '409':
           description: Insufficient stock
 
@@ -85,7 +87,7 @@ paths:
         '400':
           description: Invalid input
         '404':
-          description: Cart or cart line not found
+          description: Cart, cart line, offer or product not found
         '409':
           description: Insufficient stock
 
