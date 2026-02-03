@@ -55,4 +55,4 @@ jobs:
           path: api/target/
 
       - name: Run Tests
-        run: mvn test -Dcompiler.skip=true
+        run: mvn test -Dspring.profiles.active=dev -Dcompiler.skip=true
