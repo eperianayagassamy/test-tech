@@ -11,7 +11,8 @@ CREATE TABLE offers (
                         stock_qty INTEGER NOT NULL DEFAULT 0,
                         state VARCHAR(50) NOT NULL,
                         CONSTRAINT check_discount_range CHECK (discount_percent BETWEEN 0 AND 100),
-                        CONSTRAINT fk_product_offer FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+                        CONSTRAINT fk_product_offer FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+                        CONSTRAINT check_stock_positive CHECK (stock_qty >= 0)
 );
 
 CREATE TABLE carts (

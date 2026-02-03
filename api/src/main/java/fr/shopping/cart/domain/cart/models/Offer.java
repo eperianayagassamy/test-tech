@@ -41,6 +41,10 @@ public class Offer {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(
+            nullable = false,
+            columnDefinition = "INTEGER CHECK (stock_qty >= 0)"
+    )
     private int stockQty;
 
     @Column(nullable = false)
