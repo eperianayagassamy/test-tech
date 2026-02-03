@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-class ProductRepositoryIT {
+class ProductConstraintIT {
 
     @Autowired
     private ProductRepository productRepository;
