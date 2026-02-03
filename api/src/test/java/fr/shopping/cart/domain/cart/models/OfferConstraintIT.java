@@ -37,9 +37,7 @@ class OfferConstraintIT {
         offer.setStockQty(1);
 
 
-        assertThrows(ConstraintViolationException.class, () -> {
-            entityManager.persistAndFlush(offer);
-        });
+        assertThrows(ConstraintViolationException.class, () -> entityManager.persistAndFlush(offer));
     }
 
     @ParameterizedTest
@@ -52,9 +50,7 @@ class OfferConstraintIT {
         offer.setStockQty(1);
 
         // L'exception est levée car la DB refuse le CHECK (discount_percent BETWEEN 0 AND 100)
-        assertThrows(ConstraintViolationException.class, () -> {
-            entityManager.persistAndFlush(offer);
-        });
+        assertThrows(ConstraintViolationException.class, () -> entityManager.persistAndFlush(offer));
     }
 
     @Test
@@ -67,9 +63,7 @@ class OfferConstraintIT {
         offer.setStockQty(1);
 
 
-        assertThrows(ConstraintViolationException.class, () -> {
-            entityManager.persistAndFlush(offer);
-        });
+        assertThrows(ConstraintViolationException.class, () -> entityManager.persistAndFlush(offer));
     }
 
     @Test
@@ -79,8 +73,6 @@ class OfferConstraintIT {
         offer.setState(State.NEUF);
         offer.setStockQty(-1);
 
-        assertThrows(ConstraintViolationException.class, () -> {
-            entityManager.persistAndFlush(offer);
-        });
+        assertThrows(ConstraintViolationException.class, () -> entityManager.persistAndFlush(offer));
     }
 }
