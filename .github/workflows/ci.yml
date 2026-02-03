@@ -22,10 +22,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build and Go Offline
-        run: |
-          mvn clean test-compile -DskipTests
-          mvn dependency:go-offline -B
+      - name: Build and Prepare
+        run: mvn clean test-compile
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -57,4 +55,4 @@ jobs:
           path: api/target/
 
       - name: Run Tests
-        run: mvn test -o -Dcompiler.skip=true
+        run: mvn test -Dcompiler.skip=true
