@@ -43,7 +43,6 @@ class CartControllerIT {
                         .content(json))
                 .andExpect(status().isCreated());
 
-        // Update quantity
         String updateJson = String.format("{\"productId\":%d,\"offerId\":%d,\"quantity\":3}", productId, offerId);
         mockMvc.perform(put("/api/v1/users/{userId}/cart/items", userId)
                         .contentType(MediaType.APPLICATION_JSON)
