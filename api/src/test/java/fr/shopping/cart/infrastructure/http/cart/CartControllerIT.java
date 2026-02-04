@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@ActiveProfiles("test")
 class CartControllerIT {
 
     @Autowired
@@ -27,7 +29,13 @@ class CartControllerIT {
 
     @Test
     void addItem_ShouldReturn201() throws Exception {
-        String json = String.format("{\"productId\":%d,\"offerId\":%d}", productId, offerId);
+        //language=json
+        final String json = """
+            {
+              "productId": "%d",
+              "offerId": "%d"
+            }
+            """.formatted(productId, offerId);
 
         mockMvc.perform(post("/api/v1/users/{userId}/cart/items", userId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -37,13 +45,26 @@ class CartControllerIT {
 
     @Test
     void updateItemQuantity_ShouldReturn204() throws Exception {
-        String json = String.format("{\"productId\":%d,\"offerId\":%d}", productId, offerId);
+        //language=json
+        final String json = """
+            {
+              "productId": "%d",
+              "offerId": "%d"
+            }
+            """.formatted(productId, offerId);
         mockMvc.perform(post("/api/v1/users/{userId}/cart/items", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated());
 
-        String updateJson = String.format("{\"productId\":%d,\"offerId\":%d,\"quantity\":3}", productId, offerId);
+        //language=json
+        final String updateJson = """
+            {
+              "productId": "%d",
+              "offerId": "%d",
+              "quantity": 3
+            }
+            """.formatted(productId, offerId);
         mockMvc.perform(put("/api/v1/users/{userId}/cart/items", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateJson))
@@ -52,7 +73,13 @@ class CartControllerIT {
 
     @Test
     void removeItem_ShouldReturn204() throws Exception {
-        String json = String.format("{\"productId\":%d,\"offerId\":%d}", productId, offerId);
+        //language=json
+        final String json = """
+                {
+                  "productId": "%d",
+                  "offerId": "%d"
+                }
+                """.formatted(productId, offerId);
         mockMvc.perform(post("/api/v1/users/{userId}/cart/items", userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -70,8 +97,13 @@ class CartControllerIT {
 
     @Test
     void addItem_ExceedStock_ShouldReturn409() throws Exception {
-        String json = String.format("{\"productId\":%d,\"offerId\":%d}", productId, offerId);
-
+        //language=json
+        final String json = """
+                {
+                  "productId": "%d",
+                  "offerId": "%d"
+                }
+                """.formatted(productId, offerId);
         // Ajouter plus que le stock disponible (stock = 5)
         for (int i = 0; i < 5; i++) {
             mockMvc.perform(post("/api/v1/users/{userId}/cart/items", userId)

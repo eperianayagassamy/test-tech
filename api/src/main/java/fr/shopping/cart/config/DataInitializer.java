@@ -7,6 +7,7 @@ import fr.shopping.cart.domain.cart.models.State;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.math.BigDecimal;
 
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 public class DataInitializer {
 
     @Bean
+    @Profile({"dev", "test"})
     CommandLineRunner initProducts(ProductRepository productRepository) {
         return args -> {
             if(productRepository.count() == 0) {
