@@ -73,8 +73,19 @@ Le projet suit une pyramide de tests :
 - Swagger UI : http://localhost:8080/swagger-ui.html
 - Console H2 (en profil dev) : http://localhost:8080/h2-console
 --- 
-# 8. Notes Techniques
+## 8. Notes Techniques
 - Java 17 + Spring Boot 3 
 - Lombok : Pour un code concis. 
 - Flyway : Pour le versioning SQL en production. 
 - Text Blocks : Utilisés dans les tests pour une meilleure lisibilité du JSON.
+---
+## 9. Axes d'amélioration : Vers une Architecture Hexagonale
+Actuellement, l'application suit une structure Spring Boot classique. Une évolution majeure consisterait à migrer vers une Architecture Hexagonale (Ports & Adapters) pour renforcer le découplage et la testabilité.
+
+Pourquoi cette évolution ?
+
+Indépendance du Framework : Isoler la logique métier des détails techniques comme Spring Boot, JPA ou les API REST.
+
+Testabilité accrue : Permettre de tester les règles métier (calculs de prix, gestion des stocks) sans charger de contexte de base de données ou de serveur web.
+
+Flexibilité technologique : Faciliter le remplacement d'un composant (ex: passer de JPA/H2 à MongoDB ou Redis) sans impacter le code métier.
