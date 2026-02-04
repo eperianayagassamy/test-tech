@@ -1,35 +1,49 @@
 # Backend Panier E-commerce – Spring Boot
 
-## 1️. Présentation
+## 1. Présentation
 
 Backend Java 17 + Spring Boot pour gérer les paniers d’une plateforme e‑commerce multi-utilisateurs.  
 
 Fonctionnalités principales :  
 
-- Gestion des paniers utilisateurs (ajout, modification, suppression d’articles)  
-- Passage de commande (checkout) avec décrémentation du stock  
-- Calcul des prix unitaires et du total du panier  
-- Stockage **en mémoire** (base h2)  
+- **Gestion du panier**: (Ajout, modification de quantité et suppression)
+- **Checkout** : Validation de commande avec mise à jour du stock en temps réel.
+- **Moteur de Prix** : Calcul des remises et des totaux au niveau du domaine. 
 - Architecture **Controller → Service → Repository**, et utilisation de **DTOs**  
 
 ---
 
-## 2️. Lancer l’application
+## 2. Architecture et Environnements
+L'application utilise les Spring Profiles pour s'adapter à l'environnement :
+
+| Profil                              | Usage               | Base de Données                                            | Fichier de propriété        |
+|-------------------------------------|---------------------|------------------------------------------------------------|-----------------------------|
+| dev                                 | Développement local | H2                                                         | application-dev.properties  |
+| test                                | Tests d'intégration | H2                                                         | application-test.properties |
+| prod                                | Production          | PostgresSQL                                                | application-prod.properties |
+---
+## 3. Lancer l’application
 
 1. Cloner le projet :  
 ```bash
-git clone https://gitlab.com/eperiana/test-tech-darty
-cd test-tech-darty/api
+git clone https://gitlab.com/eperiana/test-tech
+cd test-tech/api
 ```
 
 2. Compiler et lancer avec Maven :
 ```
-./mvnw spring-boot:run
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 ```
 L’application démarre par défaut sur http://localhost:8080
 
+3. Lancer les tests
+Exécute la suite complète (Unitaires + Intégration) :
+```
+./mvnw test
+```
+
 ---
-# 3️. Endpoints API
+## 4. Endpoints API
 
 Préfixe commun :
 ```
@@ -44,31 +58,23 @@ Préfixe commun :
 | `/checkout`                         | POST    | Passer la commande : décrémente le stock et vide le panier | –                                                         | `200 OK`, `InsufficientStockException` si stock insuffisant, `CartNotFoundException` |
 
 ---
-
-# 4️. Configuration du stock
-
-Le stock est initialisé en mémoire via la classe DataInitializer.
-
-
---- 
-# 5️. Structure des DTOs
-
-- AddItemRequestDto : { productId, offerId }
-- UpdateItemRequestDto : { productId, offerId, quantity }
-- CartLineResponseDto : { productId, offerId, state, quantity, unitPrice, lineTotal }
-- CartResponseDto : { userId, lines, totalPrice }
-
+## 5. Intégrité des Données
+Le modèle de données impose des règles strictes via JPA et le schéma SQL :
+- Remises : discount_percent doit être compris entre 0 et 100. 
+- Stocks : stock_qty ne peut jamais être inférieur à 0.
 ---
-# 6. Swagger UI
-
-Pour explorer et tester l’API directement depuis un navigateur :
-
-http://localhost:8080/swagger-ui.html
-
+## 6. Stratégie de Test
+Le projet suit une pyramide de tests :
+- Tests Unitaires (JUnit 5 + Mockito) : Validation de la logique métier (getFinalUnitPrice, calculs totaux) et des services.
+- Tests d'intégrité (DataJpaTest) : Vérification des contraintes de base de données (Check constraints, Nullability).
+- Tests d'Intégration (MockMvc) : Validation des contrats API et des codes de retour HTTP sur des scénarios complets.
 --- 
-# 7. Notes techniques
-- Java 17 + Spring Boot 3
-- Stockage en mémoire uniquement (h2)
-- Architecture couche Controller → Service → Repository
-- Gestion des exceptions via @ControllerAdvice
-- DTOs pour tous les échanges REST
+## 7. Outils & Documentation
+- Swagger UI : http://localhost:8080/swagger-ui.html
+- Console H2 (en profil dev) : http://localhost:8080/h2-console
+--- 
+# 8. Notes Techniques
+- Java 17 + Spring Boot 3 
+- Lombok : Pour un code concis. 
+- Flyway : Pour le versioning SQL en production. 
+- Text Blocks : Utilisés dans les tests pour une meilleure lisibilité du JSON.
